@@ -23,22 +23,26 @@ fi
 # Please remove the "Author" lines above and replace them
 # with your own name if you copy and modify this script.
 
-DESC="Launch python web server"
-DAEMON=/usr/sbin/pythonWebServer
 PROG="pythonWebServer"
 RETVAL=0
 
-start() {	
-	echo -n $"Starting $PROG:"
-	NOW=$(date +"%Y_%m_%d_%H_%M_%S") && cd /home/pi/Server/ && sudo -u pi python ./pythonWebServer.py >> ./log/log_$NOW.log&
-
-	RETVAL=$?
-	[ "$RETVAL" = 0 ] && sudo  touch /var/lock/subsys/$PROG
+start() {
+	/home/pi/Server/init/verifyLaunching.sh
+	EXISTS=$?
+	if [ "$EXISTS"  -eq "1" ]
+	then
+		echo "Starting $PROG:"
+		NOW=$(date +"%Y_%m_%d_%H_%M_%S") && cd /home/pi/Server/ && sudo -u pi python ./pythonWebServer.py >> ./log/log_$NOW.log&
+		RETVAL=$?
+		[ "$RETVAL" = 0 ] && sudo  touch /var/lock/subsys/$PROG
+	else
+		echo "$PROG is Alreay working"
+	fi
 	echo
 }
 
 stop() {	
-	echo -n $"Stopping $PROG:"
+	echo "Stopping $PROG:"
 
 	killproc $PROG -TERM
 	RETVAL=$?
@@ -47,7 +51,7 @@ stop() {
 }
 
 reload() {	
-	echo -n $"Reloading $PROG:"
+	echo "Reloading $PROG:"
 	killproc $PROG -HUP
 	RETVAL=$?
 	echo
@@ -80,7 +84,7 @@ case "$1" in
 		RETVAL=$?
 		;;
 	*)	
-		echo $"Usage: $0 {start|stop|restart|reload|condrestart|status}"
+		echo "Usage: $0 {start|stop|restart|reload|condrestart|status}"
 		RETVAL=1
 esac
 exit $RETVAL
