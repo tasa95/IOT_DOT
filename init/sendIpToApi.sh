@@ -21,15 +21,15 @@ FNAME="sendIPLog"
 DATAFILE=$SCRIPTPATH"/data.xvf"
 FILENAME=$SCRIPTPATH"/logs/"$DATE"_"$TIME$FNAME$ext
 until [ -n "$IP" ]; do
-	IP="$($MYPATH/getIpAddress.sh)"
+	IP="$($SCRIPTPATH/getIpAddress.sh)"
 	$SLEEP 1
 done
-MAC=$(/home/pi/Server/init/getMacAddress.sh)
+MAC=$("$SCRIPTPATH"/getMacAddress.sh)
 MAC=${MAC^^}
 echo "MAC: $MAC"
-#EXTERN SCREEN 1
-#INTERN SCREEN 0
-ROLE=1
+#EXTERN SCREEN 2
+#INTERN SCREEN 1
+
 TEXT="SEND IP"
 
 
