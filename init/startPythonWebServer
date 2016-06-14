@@ -29,6 +29,7 @@ MY_PATH="`dirname \"$0\"`"                      # relative
 MY_PATH="`( cd \"$MY_PATH\" && pwd )`"          # absolutized and normalized
 start() {
 	cmd="$MY_PATH/verifyLaunching.sh"
+	echo "$cmd"
 	$cmd
 	EXISTS=$?
 	if [ "$EXISTS"  -eq "1" ]
