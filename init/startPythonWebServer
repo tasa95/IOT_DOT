@@ -25,14 +25,16 @@ fi
 
 PROG="pythonWebServer"
 RETVAL=0
-
+MY_PATH="`dirname \"$0\"`"                      # relative
+MY_PATH="`( cd \"$MY_PATH\" && pwd )`"          # absolutized and normalized
 start() {
-	/home/pi/Server/init/verifyLaunching.sh
+	cmd="$MY_PATH/verifyLaunching.sh"
+	$cmd
 	EXISTS=$?
 	if [ "$EXISTS"  -eq "1" ]
 	then
 		echo "Starting $PROG:"
-		NOW=$(date +"%Y_%m_%d_%H_%M_%S") && cd /home/pi/Server/ && sudo -u pi python ./pythonWebServer.py >> ./log/log_$NOW.log&
+		NOW=$(date +"%Y_%m_%d_%H_%M_%S") && cd "$MY_PATH/.." && sudo -u pi python ./pythonWebServer.py >> ./log/log_$NOW.log&
 		RETVAL=$?
 		[ "$RETVAL" = 0 ] && sudo  touch /var/lock/subsys/$PROG
 	else
