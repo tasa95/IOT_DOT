@@ -27,10 +27,11 @@ DESC="Launch python web server"
 DAEMON=/usr/sbin/pythonWebServer
 PROG="pythonWebServer"
 RETVAL=0
-
+MY_PATH="`dirname \"$0\"`"              	# relative
+MY_PATH="`( cd \"$MY_PATH\" && pwd )`" 		# absolutized and normalized
 start() {	
 	echo -n $"Starting $PROG:"
-	NOW=$(date +"%Y_%m_%d_%H_%M_%S") && cd /home/pi/Server/ && sudo -u pi python ./pythonWebServer.py >> ./log/log_$NOW.log&
+	NOW=$(date +"%Y_%m_%d_%H_%M_%S") && cd "$MY_PATH" && sudo -u pi python ./pythonWebServer.py >> ./log/log_$NOW.log&
 
 	RETVAL=$?
 	[ "$RETVAL" = 0 ] && sudo  touch /var/lock/subsys/$PROG

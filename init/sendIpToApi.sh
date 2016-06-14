@@ -1,15 +1,15 @@
 #!/bin/bash
 SLEEP="/bin/sleep"
-PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+MYPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 ADDRESS="http://httpbin.org/post"
 IP=""
 ext=".log"
 TIME="$(/bin/date +%H_%M_%S)"
 DATE="$(/bin/date +%d_%m_%Y)"
 NAME="sendIPLog"
-FILENAME=$PATH"/logs/"$DATE"_"$TIME$NAME$ext
+FILENAME=$MYPATH"/logs/"$DATE"_"$TIME$NAME$ext
 until [ -n "$IP" ]; do
-	IP="$(/home/pi/Server/init/getIpAddress.sh)"
+	IP="$($MYPATH/getIpAddress.sh)"
 	$SLEEP 1
 done
 MAC=$(/home/pi/Server/init/getMacAddress.sh)
