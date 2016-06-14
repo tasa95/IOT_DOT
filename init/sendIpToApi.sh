@@ -5,7 +5,7 @@
 #Send Ip  mac adresse and role to the web api
 #
 SLEEP="/bin/sleep"
-PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 source  ./configuration.cfg
 echo "Address : $ADDRESS"
 echo "Role: $ROLE"
@@ -14,10 +14,10 @@ ext=".log"
 TIME="$(/bin/date +%H_%M_%S)"
 DATE="$(/bin/date +%d_%m_%Y)"
 FNAME="sendIPLog"
-DATAFILE=$PATH"/data.xvf"
+DATAFILE=$SCRIPTPATH"/data.xvf"
 
 
-FILENAME=$PATH"/logs/"$DATE"_"$TIME$FNAME$ext
+FILENAME=$SCRIPTPATH"/logs/"$DATE"_"$TIME$FNAME$ext
 until [ -n "$IP" ]; do
 	IP="$(/home/pi/Server/init/getIpAddress.sh)"
 	$SLEEP 1
@@ -35,21 +35,22 @@ TEXT="SEND IP"
 json="{\"ip_address\":\"$IP\", \"mac_address\":\"$MAC\", \"name\":\"$NAME\", \"role\":\"$ROLE\"}"
 ID=0
 
-if[ -a "$DATAFILE"]
+if [ -e "$DATAFILE" ]
 	then
-	ID=$(cat "$DATAFILE" | grep -oh 'id:":"[0-9]*"' | grep -oh [0-9]*)
+	ID=$(cat "$DATAFILE" | grep -oh 'id":"[0-9]*"' | grep -oh "[0-9]*")
 	TEXT="UPDATE IP"
 fi
 
 
 RESPONSE=""
+echo "$ID"
 while true
 do
-	if [ $ID == 0 ]
+	if [ $ID == 0 ] #FIRST TIME IS ON
 		then
-		RESPONSE=$(/usr/bin/curl --output "$FILENAME" -H "Content-Type: application/json"  --fail  --request POST --data "$json" "$ADDRESS")  
+		RESPONSE=$(/usr/bin/curl -sb --output "$FILENAME" -H "Content-Type: application/json"  --request POST --data "$json" "$ADDRESS")  
 	else
-		RESPONSE=$(/usr/bin/curl --ouptut "$FILENAME" -H "Content-type: application/json" --fail --request PUT --data "$json" "$ADRESS/$ID")
+		RESPONSE=$(/usr/bin/curl -sb --ouptut "$FILENAME" -H "Content-type: application/json" --request PUT --data "$json" "$ADDRESS/$ID")
 	fi
 	exit_status=$?
 	echo "exit_status = $exit_status"
@@ -59,7 +60,10 @@ do
 		#SI LA REPONSE EST UN POST
 		if [ $ID == 0 ]
 			then
-			echo "$RESPONSE" > "$DATAFILE"
+			if [ -n "$RESPONSE" ]
+				then
+				echo "$RESPONSE" > "$DATAFILE"
+			fi
 		fi
 		break
 	else
