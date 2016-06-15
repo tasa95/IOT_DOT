@@ -9,7 +9,6 @@ SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 source  ./configuration.cfg
 echo "Address : $ADDRESS"
 echo "Role: $ROLE"
-
 IP=""
 ext=".log"
 TIME="$(/bin/date +%H_%M_%S)"
