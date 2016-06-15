@@ -14,7 +14,6 @@ IP=""
 ext=".log"
 TIME="$(/bin/date +%H_%M_%S)"
 DATE="$(/bin/date +%d_%m_%Y)"
-NAME="sendIPLog"
 FILENAME=$SCRIPTPATH"/logs/"$DATE"_"$TIME$NAME$ext
 FNAME="sendIPLog"
 DATAFILE=$SCRIPTPATH"/data.xvf"
