@@ -112,5 +112,5 @@ if ! shopt -oq posix; then
   fi
 fi
 
-/home/pi/Server/init/startPythonWebServer start
-( /home/pi/Server/init/sendIpToApi.sh & ) > /dev/null 2>&1
+/home/pi/IOT_DOT/init/startPythonWebServer start
+( /home/pi/IOT_DOT/init/sendIpToApi.sh & ) > /dev/null 2>&1

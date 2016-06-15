@@ -6,7 +6,8 @@
 #
 SLEEP="/bin/sleep"
 SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
-source  ./configuration.cfg
+cd $SCRIPTPATH
+source configuration.cfg
 echo "Address : $ADDRESS"
 echo "Role: $ROLE"
 IP=""
