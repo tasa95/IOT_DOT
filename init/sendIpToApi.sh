@@ -5,7 +5,6 @@
 #Send Ip  mac adresse and role to the web api
 #
 SLEEP="/bin/sleep"
-ADDRESS="http://httpbin.org/post"
 SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 source  ./configuration.cfg
 echo "Address : $ADDRESS"
