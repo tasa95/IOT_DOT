@@ -39,6 +39,12 @@ if [ -e "$DATAFILE" ]
 	then
 	ID=$(cat "$DATAFILE" | grep -oh 'id":"[0-9]*"' | grep -oh "[0-9]*")
 	TEXT="UPDATE IP"
+	if [ -z "$ID" ]
+		then
+		echo "NO ID in File delete IT and exit"
+		rm "$DATAFILE"
+		exit 0
+	fi
 fi
 
 
