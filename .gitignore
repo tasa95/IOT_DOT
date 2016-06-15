@@ -60,7 +60,8 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
-
 #BASH_conf
 *.cfg
-
+*.xvf
+init/*.cfg
+init/*.xvf
