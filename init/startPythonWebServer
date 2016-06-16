@@ -29,7 +29,6 @@ MY_PATH="`dirname \"$0\"`"                      # relative
 MY_PATH="`( cd \"$MY_PATH\" && pwd )`"          # absolutized and normalized
 start() {
 	cmd="$MY_PATH/verifyLaunching.sh"
-	echo "$cmd"
 	$cmd
 	EXISTS=$?
 	if [ "$EXISTS"  -eq "1" ]
@@ -37,6 +36,8 @@ start() {
 		echo "Starting $PROG:"
 		NOW=$(date +"%Y_%m_%d_%H_%M_%S") && cd "$MY_PATH/.." && sudo -u pi python ./pythonWebServer.py >> ./log/log_$NOW.log&
 		RETVAL=$?
+		cmdSend="$MY_PATH/../sendLedMode.sh&"
+		eval $cmdSend
 		[ "$RETVAL" = 0 ] && sudo  touch /var/lock/subsys/$PROG
 	else
 		echo "$PROG is Alreay working"

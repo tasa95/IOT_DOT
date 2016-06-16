@@ -9,9 +9,13 @@ form = cgi.FieldStorage()
 print("Content-type: text/html; charset=utf-8\n")
 print(form.getvalue("mode"))
 mode = form.getvalue("mode")
-if mode is not None:
-	cmd = "sudo "+path+"/cPartFolder/codesend "+mode
-	subprocess.call([cmd],shell=True)
+
+if mode is not None and (mode == "1" or mode == "2"):
+	file = open('currentmode.txt','w')
+	file.write(mode)
+	file.close()
+	#cmd = "sudo "+path+"/cPartFolder/codesend "+mode
+	#subprocess.call([cmd],shell=True)
 html = """<!DOCTYPE html>
 <head>
     <title>Mon programme</title>
