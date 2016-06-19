@@ -48,8 +48,8 @@ start() {
 			sudo -u pi mkdir ./log/pythonWebServer
 		fi
 		sudo -u pi touch ./log/pythonWebServer/log_$NOW.log
-		sudo -u pi chmod o+wr ./log/pythonWebServer/log_$NOW.log
-		(sudo -u pi python ./pythonWebServer.py "./log/pythonWebServer/log_$NOW.log" >> ./log/pythonWebServer/log_$NOW.log)&
+		sudo -u pi chmod o+wrx ./log/pythonWebServer/log_$NOW.log
+		(sudo -u pi python ./pythonWebServer.py "./log/pythonWebServer/log_$NOW.log")&
 		RETVAL=$?
 
 		if [ ! -d ./log/sendLedMode ]

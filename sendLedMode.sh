@@ -12,6 +12,8 @@ limit=10
 flock -x -w 10 200 || exit 1
 while true; do
 	currentMode="$(cat $MY_PATH/currentmode.txt)"
+
+	date +"%m/%d/%Y %H:%M:%S $HOSTNAME" 
 	cmd="sudo $MY_PATH/cPartFolder/codesend $currentMode"
 	eval $cmd
 	currentSleepTime="$(cat $MY_PATH/currentSleepTime.txt)"

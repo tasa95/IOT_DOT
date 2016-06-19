@@ -5,6 +5,7 @@ import cgi
 import subprocess
 import os
 import fcntl
+import time
 
 def getCurrentModeFromHTTP():
 	form = cgi.FieldStorage()
@@ -35,7 +36,7 @@ path = os.path.dirname(os.path.abspath(__file__))
 print("Content-type: text/html; charset=utf-8\n")
 mode = getCurrentModeFromHTTP();
 print(mode);
-
+now = time.strftime("%c")
 if mode is not None and (mode == "1" or mode == "2"):
 	writeNewMode(mode);
 	writeNewSleepTime();
