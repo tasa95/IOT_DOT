@@ -59,7 +59,10 @@ do
 		RESPONSE=$(/usr/bin/curl -sb --ouptut "$FILENAME" -H "Content-type: application/json" --request PUT --data "$json" "$ADDRESS/$ID")
 	fi
 	exit_status=$?
+	HTTP_CODE_STATUS=$(echo "$RESPONSE" | head -n 1 | grep -E -o [0-9]{3})
 	echo "exit_status = $exit_status"
+	echo "HTTP_CODE_STATUS = $HTTP_CODE_STATUS"
+
 	if [ $exit_status == 0 ]
 		then
 		echo "$DATE $TIME SUCCESS $TEXT" >> "$FILENAME"

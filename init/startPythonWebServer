@@ -34,9 +34,31 @@ start() {
 	if [ "$EXISTS"  -eq "1" ]
 	then
 		echo "Starting $PROG:"
-		NOW=$(date +"%Y_%m_%d_%H_%M_%S") && cd "$MY_PATH/.." && sudo -u pi python ./pythonWebServer.py >> ./log/log_$NOW.log&
+		NOW=$(date +"%Y_%m_%d_%H_%M_%S")
+		cd "$MY_PATH/.."
+		
+		if [ ! -d ./log ]
+                        then
+                        sudo -u pi mkdir ./log
+                fi
+
+
+		if [ ! -d ./log/pythonWebServer ]
+			then
+			sudo -u pi mkdir ./log/pythonWebServer
+		fi
+		sudo -u pi touch ./log/pythonWebServer/log_$NOW.log
+		sudo -u pi chmod o+wr ./log/pythonWebServer/log_$NOW.log
+		(sudo -u pi python ./pythonWebServer.py "./log/pythonWebServer/log_$NOW.log" >> ./log/pythonWebServer/log_$NOW.log)&
 		RETVAL=$?
-		cmdSend="$MY_PATH/../sendLedMode.sh&"
+
+		if [ ! -d ./log/sendLedMode ]
+			then
+                        sudo -u pi mkdir ./log/sendLedMode
+		fi
+		sudo -u pi touch  ./log/sendLedMode/log_$NOW.log
+		sudo -u pi chmod u+xrw ./log/sendLedMode/log_$NOW.log
+		cmdSend="(sudo -u pi ./sendLedMode.sh >> ./log/sendLedMode/log_$NOW.log)&"
 		eval $cmdSend
 		[ "$RETVAL" = 0 ] && sudo  touch /var/lock/subsys/$PROG
 	else

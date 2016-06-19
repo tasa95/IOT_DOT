@@ -2,6 +2,14 @@
 
 import BaseHTTPServer
 import CGIHTTPServer
+import sys
+import datetime
+
+if(len(sys.argv) > 1):
+	fileError = sys.argv[1]
+	sys.stderr = open(fileError,'w')
+	sys.stdout = sys.stderr
+	print datetime.datetime.now()
 
 
 PORT = 8888
