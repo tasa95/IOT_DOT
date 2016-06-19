@@ -26,7 +26,7 @@ while true; do
 	if [ $occurence == $limit ]
 		then
 		currentSleepTime=$(($currentSleepTime *10))
-		echo "Nouveau Temps d'attente pour l'envoi du mode"
+		echo "Nouveau Temps d'attente pour l'envoi du mode : $currentSleepTime secondes"
 		flock -x -w 5  "$MY_PATH/currentSleepTime.txt" echo $currentSleepTime > "$MY_PATH/currentSleepTime.txt" 
 	fi
 	let occurence++
