@@ -33,23 +33,25 @@ def writeNewSleepTime():
 
 path = os.path.dirname(os.path.abspath(__file__))
 
-print("Content-type: text/html; charset=utf-8\n")
+print("Accept:application/json");
+print("Content-type: text/html; charset=utf-8\n");
+
+#print("Accept: text/*, text/html, text/html;level=1, */*; Content-type: text/html; charset=utf-8\n")
 mode = getCurrentModeFromHTTP();
-print(mode);
+codesend = ""
+#print(mode);
 now = time.strftime("%c")
-if mode is not None and (mode == "1" or mode == "2"):
+if mode is not None and (mode == "true" or mode == "false"):
 	writeNewMode(mode);
 	writeNewSleepTime();
-	cmd = "sudo "+path+"/cPartFolder/codesend "+mode
+	if mode == "true":
+		codesend = "2"
+	else:
+		codesend = "1"
+	cmd = "sudo "+path+"/cPartFolder/codesend "+codesend+ " &"
 	subprocess.call([cmd],shell=True)
-html = """<!DOCTYPE html>
-<head>
-    <title>Mon programme</title>
-</head>
-<body>
 
-</body>
-</html>
-"""
+#print(mode)
+html = "<!DOCTYPE html><head><title>Mode Led</title></head><body>"+codesend+"</body></html>"
 
 print(html)
