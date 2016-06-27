@@ -42,12 +42,12 @@ codesend = ""
 #print(mode);
 now = time.strftime("%c")
 if mode is not None and (mode == "true" or mode == "false"):
-	writeNewMode(mode);
 	writeNewSleepTime();
 	if mode == "true":
 		codesend = "2"
 	else:
 		codesend = "1"
+	writeNewMode(codesend)
 	cmd = "sudo "+path+"/cPartFolder/codesend "+codesend+ " &"
 	subprocess.call([cmd],shell=True)
 
