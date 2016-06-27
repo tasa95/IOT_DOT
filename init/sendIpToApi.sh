@@ -1,8 +1,9 @@
 #!/bin/bash
+#########################################################
+#	Author : Allard saint albin Thierry
 #
-#Author : Allard saint albin Thierry
-#
-#Send Ip  mac adresse and role to the web api
+#	Description : Send Ip  mac adresse and role to the web api
+# 	Log file are present in the logs directory of the init folder
 #
 SLEEP="/bin/sleep"
 SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
@@ -14,12 +15,13 @@ IP=""
 ext=".log"
 TIME="$(/bin/date +%H_%M_%S)"
 DATE="$(/bin/date +%d_%m_%Y)"
-FILENAME=$SCRIPTPATH"/logs/"$DATE"_"$TIME$NAME$ext
 FNAME="sendIPLog"
 DATAFILE=$SCRIPTPATH"/data.xvf"
 FILENAME=$SCRIPTPATH"/logs/"$DATE"_"$TIME$FNAME$ext
+
+#Until I don't have an IP Adress
 until [ -n "$IP" ]; do
-	IP="$($SCRIPTPATH/getIpAddress.sh)"
+	IP="$($SCRIPTPATH/getIpAddress.sh)" 
 	$SLEEP 1
 done
 MAC=$("$SCRIPTPATH"/getMacAddress.sh)
@@ -29,7 +31,6 @@ echo "MAC: $MAC"
 #INTERN SCREEN 1
 
 TEXT="SEND IP"
-
 
 
 json="{\"ip_address\":\"$IP\", \"mac_address\":\"$MAC\", \"name\":\"$NAME\", \"role\":\"$ROLE\"}"
