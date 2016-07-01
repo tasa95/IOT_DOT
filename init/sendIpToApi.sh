@@ -9,6 +9,7 @@ SLEEP="/bin/sleep"
 SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 cd $SCRIPTPATH
 source configuration.cfg
+source url.cfg
 echo "Address : $ADDRESS"
 echo "Role: $ROLE"
 IP=""
@@ -33,7 +34,7 @@ echo "MAC: $MAC"
 TEXT="SEND IP"
 
 
-json="{\"ip_address\":\"$IP\", \"mac_address\":\"$MAC\", \"name\":\"$NAME\", \"role\":\"$ROLE\"}"
+json="{\"ip_address\":\"$IP\", \"mac_address\":\"$MAC\", \"name\":\"$NAME\", \"role\":\"$ROLE\", \"master\":\"$MASTER\"}"
 ID=0
 
 if [ -e "$DATAFILE" ]
