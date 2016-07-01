@@ -6,7 +6,8 @@ import subprocess
 import os
 import fcntl
 import time
-
+import signal
+import datetime
 def getCurrentModeFromHTTP():
 	form = cgi.FieldStorage()
 	mode = form.getvalue("mode")
@@ -28,9 +29,34 @@ def writeNewSleepTime():
         fcntl.flock(fileSleep,fcntl.LOCK_UN)
         fileSleep.close()
 	return;
-	
+
+def killSendLedModeProcess():
+	if os.path.isfile('sendLedModePid'):
+                if os.stat("sendLedModePid").st_size != 0:
+			with open('sendLedModePid', 'r') as myfile:
+				for line in myfile:
+					filePid=line
+					cmd = "(sudo kill "+filePid+")&"
+					subprocess.call([cmd],shell=True)
+			os.remove("sendLedModePid")
+			return 0
+	return 1
+
+def startSendLedModeProcess():
+	today=datetime.datetime.now()
+        logFile="log_"+str(today.year)+"_"+str(today.month)+"_"+str(today.day)+"_"+str(today.hour)+"_"+str(today.minute)+"_"+str(today.second)+".log"
+        if not os.path.exists("./log"):
+        	os.makedirs("log")
+        if not os.path.exists("./log/sendLedMode"):
+        	os.makedirs("./log/sendLedMode")
+        cmd = "(sudo -u pi ./sendLedMode.sh >> ./log/sendLedMode/"+logFile+")&"
+        subprocess.call([cmd],shell=True)
 
 
+def restartSendLedMode():
+	if killSendLedModeProcess() == 0:
+		startSendLedModeProcess()
+			
 path = os.path.dirname(os.path.abspath(__file__))
 
 print("Content-type: text/html; charset=utf-8\n")
@@ -40,8 +66,7 @@ now = time.strftime("%c")
 if mode is not None and (mode == "1" or mode == "2"):
 	writeNewMode(mode);
 	writeNewSleepTime();
-	cmd = "sudo "+path+"/cPartFolder/codesend "+mode
-	subprocess.call([cmd],shell=True)
+	restartSendLedMode();
 html = """<!DOCTYPE html>
 <head>
     <title>Mon programme</title>

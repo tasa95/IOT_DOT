@@ -8,7 +8,7 @@ defaulTime=1
 startTime=0
 limit=10
 (
-
+echo $BASHPID >> sendLedModePid
 flock -x -w 10 200 || exit 1
 while true; do
 	currentMode="$(cat $MY_PATH/currentmode.txt)"
