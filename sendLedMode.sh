@@ -18,11 +18,8 @@ defaulTime=1
 startTime=0
 limit=10
 (
-<<<<<<< HEAD
 echo $BASHPID >> sendLedModePid
-=======
 ## lock  script execution with file descriptor 200 and a sleeping time of 10
->>>>>>> b7881be373110b4e527cb0782ae430c6eddb73aa
 flock -x -w 10 200 || exit 1
 while true; do
 	#Get current mode
