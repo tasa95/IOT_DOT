@@ -18,10 +18,9 @@ fi
 #                    override the defaults in /lib/init/init-d-script.
 ### END INIT INFO
 
-# Author: Foo Bar <foobar@baz.org>
+# Author:  Allard saint albin Thierry
+# Script that will start python web server
 #
-# Please remove the "Author" lines above and replace them
-# with your own name if you copy and modify this script.
 
 PROG="pythonWebServer"
 RETVAL=0
@@ -36,7 +35,7 @@ start() {
 		echo "Starting $PROG:"
 		NOW=$(date +"%Y_%m_%d_%H_%M_%S")
 		cd "$MY_PATH/.."
-		
+		#CREATE LOG DIRECTORY
 		if [ ! -d ./log ]
                         then
                         sudo -u pi mkdir ./log
@@ -47,11 +46,10 @@ start() {
 			then
 			sudo -u pi mkdir ./log/pythonWebServer
 		fi
-		sudo -u pi touch ./log/pythonWebServer/log_$NOW.log
-		sudo -u pi chmod o+wrx ./log/pythonWebServer/log_$NOW.log
-		(sudo -u pi python ./pythonWebServer.py "./log/pythonWebServer/log_$NOW.log")&
+		########################
+		(python ./pythonWebServer.py "./log/pythonWebServer/log_$NOW.log")&
 		RETVAL=$?
-
+		PID=$!
 		if [ ! -d ./log/sendLedMode ]
 			then
                         sudo -u pi mkdir ./log/sendLedMode
@@ -60,9 +58,10 @@ start() {
 		sudo -u pi chmod u+xrw ./log/sendLedMode/log_$NOW.log
 		cmdSend="(sudo -u pi ./sendLedMode.sh >> ./log/sendLedMode/log_$NOW.log)&"
 		eval $cmdSend
-		[ "$RETVAL" = 0 ] && sudo  touch /var/lock/subsys/$PROG
+		[ "$RETVAL" = 0 ] && sudo  touch /var/lock/subsys/$PROG 
+		sudo echo "$PID"  >  "$MY_PATH/pythonPID"
 	else
-		echo "$PROG is Alreay working"
+		echo "$PROG is Already working"
 	fi
 	echo
 }
@@ -72,6 +71,8 @@ stop() {
 
 	killproc $PROG -TERM
 	RETVAL=$?
+	PID="$(cat $MY_PATH/pythonPID)"
+	sudo kill "$PID"
 	[ "$RETVAL" = 0 ] && sudo rm -f /var/lock/subsys/$PROG
 	echo
 }

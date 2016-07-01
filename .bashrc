@@ -112,5 +112,5 @@ if ! shopt -oq posix; then
   fi
 fi
 
-/home/pi/IOT_DOT/init/startPythonWebServer start >> /home/pi/IOT_DOT/init/HistoryPythonServer.txt
-( /home/pi/IOT_DOT/init/sendIpToApi.sh & ) > /dev/null 2>&1
+sudo -u pi /home/pi/IOT_DOT/init/startPythonWebServer start
+(sudo -u pi /home/pi/IOT_DOT/init/sendIpToApi.sh & ) > /dev/null 2>&1
