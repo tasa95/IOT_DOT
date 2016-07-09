@@ -43,6 +43,7 @@ while true; do
 	## IF  the setLedMode.py has not been calls  during 10 sleep, so we increase the sleeping tiùe
 	if [ $occurence == $limit ]
 		then
+		occurence=0
 		currentSleepTime=$(($currentSleepTime *10))	
 		echo "Nouveau Temps d'attente pour l'envoi du mode : $currentSleepTime secondes"
 		## we lock and write the new default time
