@@ -1,6 +1,7 @@
 /*
 
  'codesend' hacked from 'send' by @justy
+ modified by Thierry Allard saint albin
  
  - The provided rc_switch 'send' command uses the form systemCode, unitCode, command
    which is not suitable for our purposes.  Instead, we call 
@@ -17,7 +18,10 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-int main(int argc, char *argv[]){
+#include <dirent.h>
+#include <errno.h>
+char fileLog[250];
+int main(int argc, char *argv[]) {
     
     // This pin is not the first pin on the RPi GPIO header!
     // Consult https://projects.drogon.net/raspberry-pi/wiringpi/pins/
@@ -34,6 +38,36 @@ int main(int argc, char *argv[]){
 	mySwitch.enableTransmit(PIN);
     
     mySwitch.send(code, 24);
+    DIR* dir = opendir("./log");
+    if (dir)
+    {
+	
+    	/* Directory exists. */
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	sprintf(fileLog, "./log/historyCodeSend_%d_%d_%d.txt", 1900+timeinfo->tm_year,timeinfo->tm_mon+1, timeinfo->tm_mday);
+	FILE *fp = fopen(fileLog, "a+");
+    	if (fp) {
+        	fprintf(fp, "%s currentMode : %d \n",asctime(timeinfo),code);
+        	fclose(fp);
+	}
+    	closedir(dir);
+    }
+    else if (ENOENT == errno)
+    {
+    	/* Directory does not exist. */
+        FILE *fp = fopen("historyCodeSend.txt", "a+");
+        if (fp) {
+                time ( &rawtime );
+                timeinfo = localtime ( &rawtime );
+                fprintf(fp, "%s currentMode : %d \n",asctime(timeinfo),code);
+                fclose(fp);
+        }
+    }
+    else
+    {
+    	/* opendir() failed for some other reason. */
+    }
 	return 0;
 
 }
