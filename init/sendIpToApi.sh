@@ -5,6 +5,7 @@
 #	Description : Send Ip  mac adresse and role to the web api
 # 	Log file are present in the logs directory of the init folder
 #
+##########################################################
 SLEEP="/bin/sleep"
 SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 cd $SCRIPTPATH
@@ -20,6 +21,7 @@ DATE="$(/bin/date +%d_%m_%Y)"
 FNAME="sendIPLog"
 DATAFILE=$SCRIPTPATH"/data.xvf"
 FILENAME=$SCRIPTPATH"/logs/"$DATE"_"$TIME$FNAME$ext
+Domain_Name="dot.itnovem.fr"
 
 #Until I don't have an IP Adress
 until [ -n "$IP" ]; do
@@ -35,7 +37,7 @@ echo "MAC: $MAC"
 TEXT="SEND IP"
 
 
-json="{\"ip_address\":\"$IP\", \"mac_address\":\"$MAC\", \"name\":\"$NAME\", \"role\":\"$ROLE\", \"master_device\":\"$MASTER\"}"
+json="{\"ip_address\":\"$IP\", \"mac_address\":\"$MAC\", \"name\":\"$NAME\", \"role\":\"$ROLE\", \"master_device\":\"$MASTER\", \"domain_name\":\"$Domain_Name\"}"
 ID=0
 
 if [ -e "$DATAFILE" ]
