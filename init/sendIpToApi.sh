@@ -10,6 +10,7 @@ SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 cd $SCRIPTPATH
 source configuration.cfg
 source url.cfg
+source internetConfiguration.sh 
 echo "Address : $ADDRESS"
 echo "Role: $ROLE"
 IP=""
@@ -22,10 +23,10 @@ FILENAME=$SCRIPTPATH"/logs/"$DATE"_"$TIME$FNAME$ext
 
 #Until I don't have an IP Adress
 until [ -n "$IP" ]; do
-	IP="$($SCRIPTPATH/getIpAddress.sh)" 
+	IP="$($SCRIPTPATH/getIpAddress.sh $Interface )" 
 	$SLEEP 1
 done
-MAC=$("$SCRIPTPATH"/getMacAddress.sh)
+MAC=$("$SCRIPTPATH"/getMacAddress.sh "$Interface")
 MAC=${MAC^^}
 echo "MAC: $MAC"
 #EXTERN SCREEN 2
