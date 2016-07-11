@@ -35,7 +35,7 @@ echo "MAC: $MAC"
 TEXT="SEND IP"
 
 
-json="{\"ip_address\":\"$IP\", \"mac_address\":\"$MAC\", \"name\":\"$NAME\", \"role\":\"$ROLE\", \"master\":\"$MASTER\"}"
+json="{\"ip_address\":\"$IP\", \"mac_address\":\"$MAC\", \"name\":\"$NAME\", \"role\":\"$ROLE\", \"master_device\":\"$MASTER\"}"
 ID=0
 
 if [ -e "$DATAFILE" ]
