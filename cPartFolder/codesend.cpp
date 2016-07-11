@@ -15,7 +15,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>     
-
+#include <dirent.h>
+#include <errno.h>
+char fileLog[250];
 int main(int argc, char *argv[]) {
     
     // This pin is not the first pin on the RPi GPIO header!
@@ -33,14 +35,17 @@ int main(int argc, char *argv[]) {
 	mySwitch.enableTransmit(PIN);
     
     mySwitch.send(code, 24);
-    DIR* dir = opendir("log");
+    DIR* dir = opendir("./log");
     if (dir)
     {
+	
+	printf("directory exists");
     	/* Directory exists. */
-	FILE *fp = fopen("./log/historyCodeSend.txt", "a+");
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	sprintf(fileLog, "./log/historyCodeSend_%d_%d_%d.txt", 1900+timeinfo->tm_year,timeinfo->tm_mon+1, timeinfo->tm_mday);
+	FILE *fp = fopen(fileLog, "a+");
     	if (fp) {
-        	time ( &rawtime );
-        	timeinfo = localtime ( &rawtime );
         	fprintf(fp, "%s currentMode : %d \n",asctime(timeinfo),code);
         	fclose(fp);
 	}
@@ -48,6 +53,7 @@ int main(int argc, char *argv[]) {
     }
     else if (ENOENT == errno)
     {
+	printf("directory doesnt exists");
     	/* Directory does not exist. */
         FILE *fp = fopen("historyCodeSend.txt", "a+");
         if (fp) {
